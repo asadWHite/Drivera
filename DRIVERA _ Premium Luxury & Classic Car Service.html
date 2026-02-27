@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drivera Booking | Premium Car Rental</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #0A2F2A;
+            --gold: #C6A13B;
+            --white: #FFFFFF;
+            --off-white: #FAFAFA;
+            --gray: #5A5A5A;
+            --light-gray: #F0F0F0;
+            --border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--off-white);
+            color: #111;
+            line-height: 1.5;
+            font-weight: 300;
+        }
+
+        h1, h2, h3, .logo, .btn {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 400;
+        }
+
+        h1 { 
+            font-size: clamp(2.5rem, 5vw, 4rem); 
+            color: var(--white);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        
+        h2 { 
+            font-size: 2.2rem; 
+            margin-bottom: 2.5rem;
+            color: var(--green);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            width: 100%;
+            background: var(--white);
+            border-bottom: var(--border);
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: var(--green);
+        }
+
+        .logo span {
+            color: var(--gold);
+            font-size: 0.9rem;
+            display: block;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--gold);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 2rem;
+            font-size: 0.9rem;
+            border: 1px solid var(--green);
+            background: transparent;
+            color: var(--green);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: var(--white);
+            border: 1px solid var(--green);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--green);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(145deg, var(--green) 0%, #0D4038 100%);
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin: 2rem 0;
+            color: var(--white);
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Car Grid */
+        .car-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .car-card {
+            background: var(--white);
+            transition: transform 0.3s;
+            border: var(--border);
+            overflow: hidden;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -15px rgba(0,0,0,0.2);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 200px;
+            background: var(--light-gray);
+            overflow: hidden;
+        }
+
+        .car-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .car-card:hover .car-image img {
+            transform: scale(1.05);
+        }
+
+        .car-content {
+            padding: 1.5rem;
+        }
+
+        .car-price {
+            font-size: 1.8rem;
+            color: var(--green);
+            margin: 0.5rem 0;
+        }
+
+        .car-price small {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .car-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            padding: 0.8rem 0;
+            border-top: var(--border);
+            border-bottom: var(--border);
+            margin: 1rem 0;
+        }
+
+        /* Driver Info */
+        .driver-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: var(--border);
+        }
+
+        .driver-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--light-gray);
+            border: 1px solid var(--gold);
+            overflow: hidden;
+        }
+
+        .driver-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .driver-details {
+            flex: 1;
+        }
+
+        .driver-name {
+            font-weight: 500;
+            color: var(--green);
+            font-size: 1rem;
+        }
+
+        .driver-phone {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+        }
+
+        /* Forms */
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 2.5rem;
+            border: var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--green);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: var(--border);
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .phone-input {
+            display: flex;
+            align-items: center;
+            border: var(--border);
+            background: var(--white);
+        }
+
+        .phone-prefix {
+            padding: 0.8rem 1rem;
+            background: var(--light-gray);
+            color: var(--green);
+            font-weight: 500;
+            border-right: var(--border);
+        }
+
+        .phone-input input {
+            border: none;
+            flex: 1;
+        }
+
+        .phone-input input:focus {
+            border: none;
+        }
+
+        /* Filter */
+        .filter-section {
+            background: var(--white);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: var(--border);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--green);
+            color: var(--white);
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .footer-gold {
+            color: var(--gold);
+        }
+
+        .support-phone {
+            font-size: 1.2rem;
+            color: var(--gold);
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        /* Utility */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .w-100 { width: 100%; }
+
+        /* Mobile */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--green);
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--white);
+                flex-direction: column;
+                padding: 2rem;
+                transition: 0.3s;
+                border-right: var(--border);
+                gap: 1.5rem;
+                align-items: flex-start;
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            .auth-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 0.8rem;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Image Preview */
+        .image-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            margin-top: 0.5rem;
+            background-size: cover;
+            background-position: center;
+            display: none;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--white);
+            border: var(--border);
+            color: var(--gray);
+        }
+
+        .empty-state p {
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">DRIVERA<span>booking.com</span></div>
+            <div class="menu-toggle" id="menuToggle">☰</div>
+            <nav id="mainNav">
+                <a href="#home" class="nav-link">HOME</a>
+                <a href="#cars" class="nav-link">CARS</a>
+                <a href="#add-car" class="nav-link" id="navAddCar">LIST CAR</a>
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn" id="loginBtn">LOGIN</button>
+                    <button class="btn btn-primary" id="registerBtn">SIGN UP</button>
+                </div>
+                <div class="auth-buttons hidden" id="profileButtons">
+                    <span id="usernameDisplay" style="color: var(--green); font-weight: 500;"></span>
+                    <div id="profilePreview" class="image-preview" style="display: inline-block;"></div>
+                    <button class="btn" id="logoutBtn">LOGOUT</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section id="home" class="hero">
+            <div class="container text-center">
+                <h1>Real Cars.<br>Real Owners.</h1>
+                <p>Book premium cars directly from verified owners in Uzbekistan.</p>
+                <a href="#cars" class="btn btn-primary" style="background: var(--gold); border-color: var(--gold); color: var(--green);">BROWSE CARS</a>
+            </div>
+        </section>
+
+        <!-- CARS SECTION -->
+        <section id="cars" class="container">
+            <h2>AVAILABLE CARS</h2>
+            
+            <div class="filter-section">
+                <div class="filter-grid">
+                    <input type="text" id="searchInput" placeholder="Search model...">
+                    <input type="number" id="minPrice" placeholder="Min $">
+                    <input type="number" id="maxPrice" placeholder="Max $">
+                    <select id="yearFilter">
+                        <option value="">All years</option>
+                        <option value="2020">2020+</option>
+                        <option value="2015">2015-2019</option>
+                        <option value="2010">2010-2014</option>
+                    </select>
+                    <button class="btn btn-primary" id="applyFilter">FILTER</button>
+                    <button class="btn" id="resetFilter">RESET</button>
+                </div>
+            </div>
+
+            <!-- CARS CONTAINER - EMPTY BY DEFAULT -->
+            <div id="carsContainer" class="car-grid">
+                <div class="empty-state">
+                    <h3 style="margin-bottom: 1rem;">No cars listed yet</h3>
+                    <p>Be the first to list your car and start earning.</p>
+                    <button class="btn btn-primary" id="gotoListCar">LIST YOUR CAR</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADD CAR SECTION -->
+        <section id="add-car" class="container hidden">
+            <h2>LIST YOUR CAR</h2>
+            <div class="form-container">
+                <form id="carForm">
+                    <h3 style="margin-bottom: 1.5rem;">Car Details</h3>
+                    
+                    <div class="form-group">
+                        <label>Car Model</label>
+                        <input type="text" id="carModel" placeholder="e.g. Mercedes-Benz E-Class" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Year</label>
+                        <input type="number" id="carYear" min="2000" max="2025" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Daily Rate ($)</label>
+                        <input type="number" id="carPrice" placeholder="e.g. 150" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Car Photo</label>
+                        <input type="file" id="carImageFile" accept="image/*" required>
+                        <div id="carImagePreview" class="image-preview"></div>
+                    </div>
+
+                    <div style="height: 1px; background: var(--gold); margin: 2rem 0;"></div>
+                    
+                    <h3 style="margin-bottom: 1.5rem;">Owner Information</h3>
+                    
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="ownerName" placeholder="e.g. Alisher Karimov" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <div class="phone-input">
+                            <span class="phone-prefix">+998</span>
+                            <input type="tel" id="ownerPhone" placeholder="90 123 45 67" pattern="[0-9]{9}" maxlength="9" required>
+                        </div>
+                        <small style="color: var(--gray);">Enter 9 digits</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Owner Photo</label>
+                        <input type="file" id="ownerImageFile" accept="image/*" required>
+                        <div id="ownerImagePreview" class="image-preview"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">LIST YOUR CAR</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- AUTH MODAL -->
+        <div id="authModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:200; align-items:center; justify-content:center;">
+            <div class="form-container">
+                <span id="closeModal" style="float:right; font-size:1.5rem; cursor:pointer;">×</span>
+                
+                <!-- LOGIN -->
+                <div id="loginForm">
+                    <h3 style="margin-bottom:1.5rem;">WELCOME BACK</h3>
+                    <div class="form-group">
+                        <input type="text" id="loginUsername" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="loginPassword" placeholder="Password">
+                    </div>
+                    <button class="btn btn-primary w-100" id="submitLogin">LOGIN</button>
+                    <p class="text-center" style="margin-top:1rem;">New here? <a href="#" id="switchToRegister" style="color: var(--gold);">Create account</a></p>
+                </div>
+                
+                <!-- REGISTER -->
+                <div id="registerForm" style="display:none;">
+                    <h3 style="margin-bottom:1.5rem;">JOIN DRIVERA</h3>
+                    <div class="form-group">
+                        <input type="text" id="regUsername" placeholder="Choose username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="regPassword" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="regFullName" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <div class="phone-input">
+                            <span class="phone-prefix">+998</span>
+                            <input type="tel" id="regPhone" placeholder="90 123 45 67" maxlength="9" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Profile Photo</label>
+                        <input type="file" id="regProfileImage" accept="image/*" required>
+                        <div id="profileImagePreview" class="image-preview"></div>
+                    </div>
+                    <button class="btn btn-primary w-100" id="submitRegister">CREATE ACCOUNT</button>
+                    <p class="text-center" style="margin-top:1rem;">Already have account? <a href="#" id="switchToLogin" style="color: var(--gold);">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div>
+                <h4 style="font-family: 'Playfair Display'; margin-bottom: 0.5rem;">DRIVERA booking.com</h4>
+                <p style="opacity:0.8;">Premium car rental platform</p>
+            </div>
+            <div class="footer-gold">
+                <p>© 2025 Drivera</p>
+                <p>support@drivera.com</p>
+                <div class="support-phone">+998 95 075 3137</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const USERS_KEY = 'drivera_users';
+            const CARS_KEY = 'drivera_cars';
+            const CURRENT_USER_KEY = 'drivera_current_user';
+
+            // REAL DATA - EMPTY INITIALLY
+            let users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+            let cars = JSON.parse(localStorage.getItem(CARS_KEY)) || []; // TOTALLY EMPTY
+            let currentUser = JSON.parse(localStorage.getItem(CURRENT_USER_KEY)) || null;
+
+            // DOM Elements
+            const carsContainer = document.getElementById('carsContainer');
+            const navAddCar = document.getElementById('navAddCar');
+            const authButtons = document.getElementById('authButtons');
+            const profileButtons = document.getElementById('profileButtons');
+            const usernameSpan = document.getElementById('usernameDisplay');
+            const profilePreview = document.getElementById('profilePreview');
+            const addCarSection = document.getElementById('add-car');
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const gotoListCar = document.getElementById('gotoListCar');
+            const authModal = document.getElementById('authModal');
+            const closeModal = document.getElementById('closeModal');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const switchToRegister = document.getElementById('switchToRegister');
+            const switchToLogin = document.getElementById('switchToLogin');
+            const submitLogin = document.getElementById('submitLogin');
+            const submitRegister = document.getElementById('submitRegister');
+            const carForm = document.getElementById('carForm');
+            const carImageFile = document.getElementById('carImageFile');
+            const carImagePreview = document.getElementById('carImagePreview');
+            const ownerImageFile = document.getElementById('ownerImageFile');
+            const ownerImagePreview = document.getElementById('ownerImagePreview');
+            const regProfileImage = document.getElementById('regProfileImage');
+            const profileImagePreview = document.getElementById('profileImagePreview');
+            const applyFilter = document.getElementById('applyFilter');
+            const resetFilter = document.getElementById('resetFilter');
+            const searchInput = document.getElementById('searchInput');
+            const minPrice = document.getElementById('minPrice');
+            const maxPrice = document.getElementById('maxPrice');
+            const yearFilter = document.getElementById('yearFilter');
+            const menuToggle = document.getElementById('menuToggle');
+            const mainNav = document.getElementById('mainNav');
+
+            // Phone validation
+            const phoneInputs = ['ownerPhone', 'regPhone'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', function(e) {
+                        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9);
+                    });
+                }
+            });
+
+            const saveCars = () => localStorage.setItem(CARS_KEY, JSON.stringify(cars));
+            const saveUsers = () => localStorage.setItem(USERS_KEY, JSON.stringify(users));
+            
+            const setCurrentUser = (user) => {
+                currentUser = user;
+                localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+                updateAuthUI();
+            };
+
+            const fileToBase64 = (file) => {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            };
+
+            const setupImagePreview = (input, preview) => {
+                input?.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            preview.style.backgroundImage = `url('${e.target.result}')`;
+                            preview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            };
+
+            setupImagePreview(carImageFile, carImagePreview);
+            setupImagePreview(ownerImageFile, ownerImagePreview);
+            setupImagePreview(regProfileImage, profileImagePreview);
+
+            const updateAuthUI = () => {
+                if (currentUser) {
+                    authButtons.classList.add('hidden');
+                    profileButtons.classList.remove('hidden');
+                    usernameSpan.textContent = currentUser.fullName || currentUser.username;
+                    
+                    if (currentUser.profileImage) {
+                        profilePreview.style.backgroundImage = `url('${currentUser.profileImage}')`;
+                        profilePreview.style.display = 'block';
+                    }
+                    
+                    addCarSection.classList.remove('hidden');
+                    navAddCar.style.display = 'inline';
+                } else {
+                    authButtons.classList.remove('hidden');
+                    profileButtons.classList.add('hidden');
+                    addCarSection.classList.add('hidden');
+                    navAddCar.style.display = 'none';
+                }
+                renderCars();
+            };
+
+            const renderCars = () => {
+                if (!cars || cars.length === 0) {
+                    carsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <h3 style="margin-bottom: 1rem;">No cars listed yet</h3>
+                            <p>Be the first to list your car and start earning.</p>
+                            ${currentUser ? 
+                                '<button class="btn btn-primary" onclick="document.getElementById(\'add-car\').scrollIntoView({behavior: \'smooth\'})">LIST YOUR CAR</button>' : 
+                                '<button class="btn btn-primary" id="loginToAdd">LOGIN TO LIST</button>'}
+                        </div>
+                    `;
+                    
+                    const loginToAdd = document.getElementById('loginToAdd');
+                    if (loginToAdd) {
+                        loginToAdd.onclick = () => {
+                            authModal.style.display = 'flex';
+                        };
+                    }
+                    return;
+                }
+
+                let filtered = [...cars];
+                const search = searchInput.value.toLowerCase();
+                const min = parseFloat(minPrice.value);
+                const max = parseFloat(maxPrice.value);
+                const yearVal = yearFilter.value;
+
+                if (search) filtered = filtered.filter(c => 
+                    c.model.toLowerCase().includes(search)
+                );
+                if (!isNaN(min)) filtered = filtered.filter(c => c.price >= min);
+                if (!isNaN(max)) filtered = filtered.filter(c => c.price <= max);
+                if (yearVal === '2020') filtered = filtered.filter(c => c.year >= 2020);
+                if (yearVal === '2015') filtered = filtered.filter(c => c.year >= 2015 && c.year <= 2019);
+                if (yearVal === '2010') filtered = filtered.filter(c => c.year >= 2010 && c.year <= 2014);
+
+                if (filtered.length === 0) {
+                    carsContainer.innerHTML = '<div class="empty-state"><p>No cars match your criteria</p></div>';
+                    return;
+                }
+
+                carsContainer.innerHTML = filtered.map(car => `
+                    <div class="car-card">
+                        <div class="car-image">
+                            <img src="${car.image}" alt="${car.model}">
+                        </div>
+                        <div class="car-content">
+                            <h3>${car.model}</h3>
+                            <div class="car-price">$${car.price}<small>/day</small></div>
+                            
+                            <div class="driver-info">
+                                <div class="driver-avatar">
+                                    <img src="${car.ownerImage}" alt="${car.ownerName}">
+                                </div>
+                                <div class="driver-details">
+                                    <div class="driver-name">${car.ownerName}</div>
+                                    <div class="driver-phone">${car.ownerPhone}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="car-meta">
+                                <span>📅 ${car.year}</span>
+                                <span>${car.bookedBy ? '🔒 Booked' : '✓ Available'}</span>
+                            </div>
+                            
+                            ${!car.bookedBy ? 
+                                `<button class="btn btn-primary w-100 book-btn" data-id="${car.id}">BOOK NOW</button>` : 
+                                `<button class="btn w-100" disabled>UNAVAILABLE</button>`}
+                        </div>
+                    </div>
+                `).join('');
+            };
+
+            // Book Car
+            carsContainer.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('book-btn')) return;
+                
+                if (!currentUser) {
+                    alert('Please login to book a car');
+                    authModal.style.display = 'flex';
+                    return;
+                }
+                
+                const carId = e.target.dataset.id;
+                const car = cars.find(c => c.id === carId);
+                if (car && !car.bookedBy) {
+                    car.bookedBy = currentUser.username;
+                    saveCars();
+                    renderCars();
+                    alert(`Booking request sent to ${car.ownerName}\nPhone: ${car.ownerPhone}`);
+                }
+            });
+
+            // Modal
+            const openModal = (form) => {
+                authModal.style.display = 'flex';
+                loginForm.style.display = form === 'login' ? 'block' : 'none';
+                registerForm.style.display = form === 'register' ? 'block' : 'none';
+            };
+
+            closeModal.onclick = () => authModal.style.display = 'none';
+            window.onclick = (e) => { if (e.target === authModal) authModal.style.display = 'none'; };
+
+            loginBtn.onclick = () => openModal('login');
+            registerBtn.onclick = () => openModal('register');
+            
+            if (gotoListCar) {
+                gotoListCar.onclick = () => {
+                    if (!currentUser) {
+                        alert('Please login to list your car');
+                        authModal.style.display = 'flex';
+                    } else {
+                        document.getElementById('add-car').scrollIntoView({behavior: 'smooth'});
+                    }
+                };
+            }
+
+            switchToRegister.onclick = (e) => { e.preventDefault(); openModal('register'); };
+            switchToLogin.onclick = (e) => { e.preventDefault(); openModal('login'); };
+
+            // Login
+            submitLogin.onclick = () => {
+                const user = document.getElementById('loginUsername').value.trim();
+                const pass = document.getElementById('loginPassword').value.trim();
+                const found = users.find(u => u.username === user && u.password === pass);
+                
+                if (found) {
+                    setCurrentUser(found);
+                    authModal.style.display = 'none';
+                } else {
+                    alert('Invalid credentials');
+                }
+            };
+
+            // Register
+            submitRegister.onclick = async () => {
+                const user = document.getElementById('regUsername').value.trim();
+                const pass = document.getElementById('regPassword').value.trim();
+                const fullName = document.getElementById('regFullName').value.trim();
+                const phone = document.getElementById('regPhone').value.trim();
+                const file = regProfileImage.files[0];
+                
+                if (!user || !pass || !fullName || !phone || !file) {
+                    return alert('Please fill all fields and upload photo');
+                }
+                if (phone.length !== 9) return alert('Phone number must be 9 digits');
+                if (users.find(u => u.username === user)) return alert('Username already exists');
+                
+                const profileImage = await fileToBase64(file);
+                const newUser = { 
+                    username: user, 
+                    password: pass, 
+                    fullName,
+                    phone: `+998 ${phone}`,
+                    profileImage 
+                };
+                
+                users.push(newUser);
+                saveUsers();
+                setCurrentUser(newUser);
+                authModal.style.display = 'none';
+            };
+
+            // Logout
+            logoutBtn.onclick = () => {
+                currentUser = null;
+                localStorage.removeItem(CURRENT_USER_KEY);
+                updateAuthUI();
+            };
+
+            // Add Car
+            carForm.onsubmit = async (e) => {
+                e.preventDefault();
+                if (!currentUser) return alert('Please login first');
+                
+                const model = document.getElementById('carModel').value;
+                const year = parseInt(document.getElementById('carYear').value);
+                const price = parseInt(document.getElementById('carPrice').value);
+                const carFile = carImageFile.files[0];
+                
+                const ownerName = document.getElementById('ownerName').value;
+                const ownerPhone = document.getElementById('ownerPhone').value;
+                const ownerFile = ownerImageFile.files[0];
+                
+                if (!model || !year || !price || !carFile || !ownerName || !ownerPhone || !ownerFile) {
+                    return alert('Please fill all fields and upload photos');
+                }
+                
+                if (ownerPhone.length !== 9) return alert('Phone number must be 9 digits');
+                
+                const carImage = await fileToBase64(carFile);
+                const ownerImage = await fileToBase64(ownerFile);
+                
+                const newCar = {
+                    id: Date.now() + '',
+                    model, 
+                    year, 
+                    price,
+                    image: carImage,
+                    ownerName,
+                    ownerPhone: `+998 ${ownerPhone}`,
+                    ownerImage,
+                    owner: currentUser.username,
+                    bookedBy: null
+                };
+                
+                cars.push(newCar);
+                saveCars();
+                renderCars();
+                carForm.reset();
+                carImagePreview.style.display = 'none';
+                ownerImagePreview.style.display = 'none';
+                
+                alert('Car listed successfully!');
+                document.getElementById('cars').scrollIntoView({behavior: 'smooth'});
+            };
+
+            // Filters
+            applyFilter.onclick = renderCars;
+            resetFilter.onclick = () => {
+                searchInput.value = '';
+                minPrice.value = '';
+                maxPrice.value = '';
+                yearFilter.value = '';
+                renderCars();
+            };
+
+            // Mobile Menu
+            menuToggle.onclick = () => mainNav.classList.toggle('active');
+
+            // Smooth Scroll
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    const id = link.getAttribute('href').substring(1);
+                    if (id === 'add-car' && !currentUser) {
+                        alert('Please login to list a car');
+                        authModal.style.display = 'flex';
+                        return;
+                    }
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    mainNav.classList.remove('active');
+                };
+            });
+
+            // Initialize
+            updateAuthUI();
+        })();
+    </script>
+</body>
+</html>
